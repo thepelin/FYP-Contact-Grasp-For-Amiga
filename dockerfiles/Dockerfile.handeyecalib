@@ -1,0 +1,28 @@
+FROM personalroboticsimperial/prl:amiga_arm_external
+SHELL ["/bin/bash", "-c"] 
+
+WORKDIR /root/ros_ws/src
+
+
+#### The calibration package only supports OpenCV4.2, but we have 4.4. We need to rebuild moveit from source with 4.4
+RUN apt-get remove python3-opencv -y && apt-get autoremove -y &&\
+    git clone https://github.com/ros-perception/vision_opencv.git &&\
+    sed -i 's=find_package(Boost REQUIRED python37)=#find_package(Boost REQUIRED python37)=' vision_opencv/cv_bridge/CMakeLists.txt &&\
+    sed -iz '1543s=$= 0=' /usr/include/python3.8/numpy/__multiarray_api.h &&\
+    git clone https://github.com/ros-planning/moveit.git &&\
+    git clone https://github.com/ros-planning/moveit_resources.git
+    
+RUN source ../devel/setup.bash && catkin build moveit
+
+
+
+#### Then we simply build the package
+RUN git clone https://github.com/ros-planning/moveit_calibration.git && \
+    apt-get update -y && \
+    DEBIAN_FRONTEND=noninteractive rosdep install -y --from-paths ./moveit_calibration --ignore-src --rosdistro noetic
+
+RUN source ../devel/setup.bash && catkin build moveit_calibration_plugins moveit_calibration_gui
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y ros-noetic-handeye
+
+CMD source ../devel/setup.bash && roslaunch amiga_driver startup.launch 

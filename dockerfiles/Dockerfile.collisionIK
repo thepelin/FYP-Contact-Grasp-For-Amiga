@@ -1,0 +1,105 @@
+FROM personalroboticsimperial/prl:ub2004-noetic-cu111
+
+SHELL ["/bin/bash", "-c"]
+
+RUN rm /etc/apt/sources.list.d/cuda.list /etc/apt/sources.list.d/nvidia-ml.list
+
+
+######################################### Installing Rust ##########################################
+WORKDIR /rust
+
+RUN apt-get update -y && \
+    curl https://sh.rustup.rs -sSf -o rust_install.sh && \
+    bash rust_install.sh -y
+
+
+###################################### Installing dependencies #####################################
+
+RUN pip install --upgrade readchar python-fcl scipy PyYaml numpy==1.22 pypcd numba sklearn
+
+WORKDIR /root/ros_ws
+
+RUN apt-get update -y && \
+    DEBIAN_FRONTEND=noninteractive apt-get install python3-catkin-tools
+
+# RUN mkdir -p src && \
+#     cd src && \
+#     git clone -b dev  https://github.com/cedricgoubard/relaxed_ik.git 
+
+COPY relaxed_ik/ src/relaxed_ik
+
+COPY amiga_description/ src/amiga_description
+COPY arnie_description/ src/arnie_description
+COPY realsense_gazebo_plugin/ src/realsense_gazebo_plugin
+COPY robotiq/ src/robotiq
+COPY universal_robot src/universal_robot
+    
+RUN apt-get update -y && \
+    DEBIAN_FRONTEND=noninteractive rosdep install --rosdistro noetic --ignore-src --from-paths ./src/ -y &&\
+    DEBIAN_FRONTEND=noninteractive apt-get install -y \
+        ros-noetic-interactive-markers \
+        ros-noetic-joint-state-publisher-gui \
+        ros-noetic-kdl-parser-py \
+        vim
+
+RUN source /opt/ros/noetic/setup.bash && catkin init && \
+    catkin build amiga_description relaxed_ik
+
+RUN source devel/setup.bash && \
+    rosrun xacro xacro /root/ros_ws/src/amiga_description/robots/urdf/amiga.urdf.xacro gazebo:=false t265_as_parent:=false >> src/relaxed_ik/src/RelaxedIK/urdfs/amiga.urdf &&\
+    sed -i 's|pkg="joint_state_publisher" type="joint_state_publisher"|pkg="joint_state_publisher_gui" type="joint_state_publisher_gui"|' -i src/relaxed_ik/launch/joint_state_pub.launch &&\
+    sed -i 's|<arg name="info_file_name" default="" />|<arg name="info_file_name" default="amiga_info.yaml" />|' -i src/relaxed_ik/launch/load_info_file.launch
+        
+# Use this to update the repo without building the whole image
+# RUN echo 1 && cd src/relaxed_ik && git pull
+
+RUN cd src/relaxed_ik/src/RelaxedIK/Utils && \
+    python setup.py build_ext --inplace && \
+    mv _transformations.cpython-38-x86_64-linux-gnu.so _transformations.so
+
+####################################################################################################
+############################### OPTION 1 - Using the old relaxed_ik ################################
+####################################################################################################
+RUN source /root/.cargo/env && \
+    rustup install 1.46 && \
+    rustup default 1.46 
+
+RUN source /root/.cargo/env && \
+    source devel/setup.bash &&\
+    cd src/relaxed_ik/src/RelaxedIK_Rust/ && \
+    cargo build --bin relaxed_ik_node && \
+    cargo build --bin randstart_ik_node 
+
+####################################################################################################
+########## OPTION 2 - Using CollisionIK with relaxed_ik_core and relaxed_ik_ros1_wrapped  ##########
+####################################################################################################
+# The only addition is the avoidance of dynamic obstacles, which we don't need since MoveIt takes 
+# care of the planning for us.
+
+# RUN cd src && git clone https://github.com/uwgraphics/relaxed_ik_ros1.git
+# RUN cd src/relaxed_ik_ros1 && \
+#     sed -i 's=git@github.com:uwgraphics/relaxed_ik_core.git=https://github.com/uwgraphics/relaxed_ik_core.git=' .gitmodules && \
+#     git submodule update --init
+
+# COPY amiga_collisionIK/config/ /root/relaxed_ik_ros1/ros_ws/src/relaxed_ik_core/config/
+
+# RUN source /root/.cargo/env && \
+#     rustup install 1.58.1 && \
+#     rustup default 1.58.1 
+
+# RUN source /root/.cargo/env && \
+#     source devel/setup.bash &&\
+#     cd src/relaxed_ik_ros1/relaxed_ik_core/ && \
+#     cargo build
+
+# RUN source devel/setup.bash && catkin build relaxed_ik_ros1 
+
+
+# To use the solver with random start state each time. More likely to find solutions, but induces
+# joint jumps
+# RUN sed -i 's|relaxed_ik_node|randstart_ik_node|' -i src/relaxed_ik/src/relaxed_ik_rust.py
+
+ENTRYPOINT [""]
+
+CMD source devel/setup.bash && source /root/.cargo/env && \
+    roslaunch relaxed_ik relaxed_ik_rust.launch

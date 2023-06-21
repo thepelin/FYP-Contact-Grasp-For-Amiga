@@ -1,0 +1,17 @@
+FROM personalroboticsimperial/prl:amiga_arm_jetson_deps
+SHELL ["/bin/bash", "-c"] 
+
+WORKDIR /root/ros_ws
+
+COPY amiga_description/ src/ur10e_robotiq/amiga_description/
+COPY amiga_driver/ src/ur10e_robotiq/amiga_driver/
+COPY amiga_moveit_config// src/ur10e_robotiq/amiga_moveit_config/
+COPY arnie_description/ src/ur10e_robotiq/arnie_description/
+COPY robotiq/ src/ur10e_robotiq/robotiq/
+COPY universal_robot/ src/ur10e_robotiq/universal_robot/
+COPY Universal_Robots_ROS_Driver/ src/ur10e_robotiq/Universal_Robots_ROS_Driver/
+
+
+RUN source /opt/ros/noetic/setup.bash && catkin build amiga_driver robotiq_3f_gripper_control robotiq_3f_gripper_joint_state_publisher robotiq_modbus_tcp
+
+CMD source devel/setup.bash && roslaunch amiga_driver startup.launch

@@ -1,0 +1,155 @@
+FROM tensorflow/tensorflow:2.2.0-gpu
+
+# FROM personalroboticsimperial/prl:ub2004-noetic-cu101
+
+SHELL ["/bin/bash", "-c"]
+
+WORKDIR /root/ros_ws
+RUN apt install wget
+
+RUN python -c "import tensorflow as tf;print(tf.__version__); print(len(tf.config.list_physical_devices('GPU')))"
+RUN apt-key del 7fa2af80
+
+RUN wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/cuda-keyring_1.0-1_all.deb && \
+    dpkg -i cuda-keyring_1.0-1_all.deb
+
+RUN sed -i '/developer\.download\.nvidia\.com\/compute\/cuda\/repos/d' /etc/apt/sources.list.d/* && \
+    sed -i '/developer\.download\.nvidia\.com\/compute\/machine-learning\/repos/d' /etc/apt/sources.list.d/*
+
+RUN apt update -y
+
+RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+
+# RUN apt install curl -y # if you haven't already installed curl && \
+#     curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add -
+
+RUN apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+
+RUN apt update -y
+
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get -qq install ros-melodic-ros-base -y
+
+RUN python -c "import tensorflow as tf;print(tf.__version__); print(len(tf.config.list_physical_devices('GPU')))"
+RUN echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc &&\
+source ~/.bashrc
+
+RUN python -m pip install pyyaml
+
+RUN apt install python3-rospkg -y
+
+RUN apt install python3-opencv -y
+
+RUN pip install trimesh pyrender tqdm 
+
+RUN apt install ros-melodic-ros-base --fix-missing -y
+
+RUN apt-get install ros-melodic-catkin python-catkin-tools -y
+
+RUN source /opt/ros/melodic/setup.bash
+#FROM personalroboticsimperial/prl:ub2004-noetic-cu111-ze
+
+
+# RUN rm /etc/apt/sources.list.d/cuda.list && \
+#     rm /etc/apt/sources.list.d/nvidia-ml.list &&\
+#     apt-get update -y && apt-get install vim xorg-dev -y
+# RUN ls
+# WORKDIR /root/ros_ws/
+
+
+# RUN pip install opencv-python pillow scipy matplotlib
+# RUN pip install mayavi
+# RUN pip3 install torch torchvision torchaudio
+# RUN pip install torch_geometric
+# RUN pip install pyg_lib torch_scatter torch_sparse torch_cluster torch_spline_conv -f https://data.pyg.org/whl/torch-2.0.0+cu117.html
+# RUN pip install open3d
+# RUN pip install pybullet==2.7.9
+# RUN pip install termcolor
+
+# ENV PATH="/root/miniconda3/bin:$PATH"
+# ARG PATH="/root/miniconda3/bin:$PATH"
+# RUN apt-get update
+
+# RUN apt-get install -y wget
+
+# RUN wget \
+#     https://repo.anaconda.com/miniconda/Miniconda3-py38_23.3.1-0-Linux-x86_64.sh
+# RUN mkdir /root/.conda \
+#     && bash Miniconda3-py38_23.3.1-0-Linux-x86_64.sh -b      
+# RUN conda --version
+
+# RUN ls /root/ros_ws && ls
+# RUN
+# RUN cd src && \
+#     git clone https://github.com/NVlabs/contact_graspnet.git
+
+# RUN cd src/contact_graspnet && conda init && conda env create -f contact_graspnet_env.yml
+
+# # RUN wget https://repo.anaconda.com/miniconda/Miniconda3-py38_23.3.1-0-Linux-x86_64.sh
+
+# CMD bash
+
+# ENV PATH="/root/miniconda3/bin:$PATH"
+
+###############################################################################################################
+################################################ MAMBA INSTALL ################################################
+###############################################################################################################
+
+# WORKDIR /mamba
+
+# RUN apt-get update \
+#     && apt-get install -y wget
+
+# RUN wget \
+#     https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-Linux-x86_64.sh && \
+#     bash Mambaforge-Linux-x86_64.sh -b
+
+
+
+###############################################################################################################
+################################################## ROBOSTACK ##################################################
+###############################################################################################################
+# RUN source ~/mambaforge/etc/profile.d/conda.sh && source ~/mambaforge/etc/profile.d/mamba.sh && \
+#     mamba create -n ros_env  && \
+#     mamba activate ros_env && \
+#     conda config --env --add channels conda-forge &&\
+#     conda config --env --add channels robostack-staging && \
+#     mamba install -y ros-noetic-desktop python=3.8
+
+
+# RUN ap-get update -y 
+
+
+# WORKDIR /ros-ws
+
+
+# RUN source ~/mambaforge/etc/profile.d/conda.sh && source ~/mambaforge/etc/profile.d/mamba.sh && mamba activate ros_env && \
+#     mamba install -y cudatoolkit=10.1 cudnn matplotlib numpy pillow mayavi tqdm pip 
+
+# COPY contact_graspnet src/contact_graspnet
+
+
+# RUN pip install tensorflow-gpu==2.2 tensorboard matplotlib numpy pillow mayavi tqdm
+    # &&\
+    # mkdir -p $CONDA_PREFIX/etc/conda/activate.d &&\
+    # echo 'CUDNN_PATH=$(dirname $(python -c "import nvidia.cudnn;print(nvidia.cudnn.__file__)"))' >> $CONDA_PREFIX/etc/conda/activate.d/env_vars.sh &&\
+    # echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CONDA_PREFIX/lib/:$CUDNN_PATH/lib' >> $CONDA_PREFIX/etc/conda/activate.d/env_vars.sh &&\
+    # source $CONDA_PREFIX/etc/conda/activate.d/env_vars.sh
+
+
+# RUN echo "source activate contact_graspnet_env" >> ~/.bashrc \
+#     && /bin/bash -c "source ~/.bashrc"
+
+# RUN conda --version
+
+
+# RUN cd src && \
+#     git clone https://github.com/NVlabs/contact_graspnet.git
+
+# RUN cd src/contact_graspnet && conda env create -f contact_graspnet_env.yml
+
+# RUN sudo apt-get install freeglut3-dev -y
+
+# RUN /bin/bash -c "source activate contact_graspnet_env"
+
+CMD bash

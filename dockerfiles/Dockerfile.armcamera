@@ -1,0 +1,12 @@
+FROM personalroboticsimperial/prl:amiga_arm_camera_deps
+SHELL ["/bin/bash", "-c"] 
+
+WORKDIR /root/ros_ws
+
+RUN apt update -y && DEBIAN_FRONTEND=noninteractive apt install -y ros-noetic-pcl-ros
+
+COPY . /root/ros_ws/src/ur10e_robotiq/
+
+RUN source /opt/ros/noetic/setup.bash && catkin build amiga_driver prl_orin_yolov5 prl_spatial_memory
+
+CMD source devel/setup.bash && roslaunch amiga_driver start_gripper_obj_detect.launch

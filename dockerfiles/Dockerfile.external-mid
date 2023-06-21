@@ -1,0 +1,33 @@
+FROM personalroboticsimperial/prl:amiga_arm_external_deps
+
+
+# RUN pip install opencv-python pillow scipy matplotlib
+# RUN pip install mayavi
+# RUN pip3 install torch torchvision torchaudio
+# RUN pip install torch_geometric
+# RUN pip install pyg_lib torch_scatter torch_sparse torch_cluster torch_spline_conv -f https://data.pyg.org/whl/torch-2.0.0+cu117.html
+# RUN pip install open3d
+# RUN pip install pybullet==2.7.9
+# RUN pip install termcolor
+
+ENV PATH="/root/miniconda3/bin:$PATH"
+ARG PATH="/root/miniconda3/bin:$PATH"
+RUN apt-get update
+
+RUN apt-get install -y wget
+
+RUN wget \
+    https://repo.anaconda.com/miniconda/Miniconda3-py38_23.3.1-0-Linux-x86_64.sh
+RUN mkdir /root/.conda \
+    && bash Miniconda3-py38_23.3.1-0-Linux-x86_64.sh -b      
+RUN conda --version
+
+WORKDIR /root/ros_ws 
+
+RUN cd src && \
+    git clone https://github.com/NVlabs/contact_graspnet.git
+
+WORKDIR /root/ros_ws/src
+RUN cd contact_graspnet && conda init && conda env create -f contact_graspnet_env.yml
+
+# RUN wget https://repo.anaconda.com/miniconda/Miniconda3-py38_23.3.1-0-Linux-x86_64.sh

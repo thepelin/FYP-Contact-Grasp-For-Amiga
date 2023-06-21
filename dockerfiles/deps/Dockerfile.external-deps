@@ -1,0 +1,115 @@
+FROM personalroboticsimperial/prl:ub2004-noetic-cu111-openCV440contrib-RS-RTABMAP
+SHELL ["/bin/bash", "-c"] 
+
+WORKDIR /root/ros_ws
+
+COPY . /root/ros_ws/src/ur10e_robotiq/
+
+RUN cd src && \
+    git clone https://github.com/ImperialCollegeLondon/marker_localisation.git
+    # git clone -b dev  https://github.com/cedricgoubard/relaxed_ik.git 
+
+RUN rm /etc/apt/sources.list.d/cuda.list /etc/apt/sources.list.d/nvidia-ml.list
+
+RUN apt-get update -y && DEBIAN_FRONTEND=noninteractive apt install -y  \
+    apt-utils \
+    ros-noetic-pointcloud-to-laserscan \
+    ros-noetic-moveit-commander \
+    python-is-python3 \
+    python3-wstool \
+    python3-osrf-pycommon \
+    liborocos-kdl-dev \
+    ros-noetic-interactive-markers \
+    ros-noetic-joint-state-publisher-gui \
+    ros-noetic-kdl-parser-py \
+    vim \
+    gdb
+
+RUN apt-get remove ros-noetic-moveit* -y && apt-get autoremove -y
+
+RUN apt-get update -y &&  cd src && wstool init . && \
+    wstool merge -t . https://raw.githubusercontent.com/ros-planning/moveit/master/moveit.rosinstall && \
+    wstool update -t .
+
+RUN rm -Rf src/arnie_main src/arnie_localisation src/arnie_description  src/arnie_localisation && \
+    source devel/setup.bash && catkin clean arnie_description arnie_main arnie_localisation
+
+RUN apt-get update -y && \
+    DEBIAN_FRONTEND=noninteractive rosdep install --rosdistro noetic --ignore-src --from-paths ./src/ -y && \
+    apt remove -y ros-noetic-rtabmap
+
+
+
+######################################### Installing Rust ##########################################
+WORKDIR /rust
+
+RUN apt-get update -y && \
+    curl https://sh.rustup.rs -sSf -o rust_install.sh && \
+    bash rust_install.sh -y
+
+###################################### Installing dependencies #####################################
+
+RUN pip install --upgrade readchar python-fcl scipy PyYaml numpy==1.22 pypcd numba scikit-learn
+
+WORKDIR /root/ros_ws
+
+RUN source /opt/ros/noetic/setup.bash && \
+    catkin build amiga_description relaxed_ik
+
+RUN source devel/setup.bash && \
+    rosrun xacro xacro /root/ros_ws/src/ur10e_robotiq/amiga_description/robots/urdf/amiga.urdf.xacro gazebo:=false t265_as_parent:=false >> src/ur10e_robotiq/relaxed_ik/src/RelaxedIK/urdfs/amiga.urdf &&\
+    sed -i 's|pkg="joint_state_publisher" type="joint_state_publisher"|pkg="joint_state_publisher_gui" type="joint_state_publisher_gui"|' -i src/ur10e_robotiq/relaxed_ik/launch/joint_state_pub.launch &&\
+    sed -i 's|<arg name="info_file_name" default="" />|<arg name="info_file_name" default="amiga_info.yaml" />|' -i src/ur10e_robotiq/relaxed_ik/launch/load_info_file.launch
+
+RUN cd src/ur10e_robotiq/relaxed_ik/src/RelaxedIK/Utils && \
+    python setup.py build_ext --inplace && \
+    mv _transformations.cpython-38-x86_64-linux-gnu.so _transformations.so
+
+
+RUN source /root/.cargo/env && \
+    rustup install 1.46 && \
+    rustup default 1.46 
+
+RUN source /root/.cargo/env && \
+    source devel/setup.bash &&\
+    cd src/ur10e_robotiq/relaxed_ik/src/RelaxedIK_Rust/ && \
+    # cargo build --bin relaxed_ik_node
+    # cargo build --bin randstart_ik_node
+    cargo build --bin relaxed_ik_cmd 
+
+###### STOMP installation ######
+
+WORKDIR /root/ros_ws
+
+RUN apt-get update -y && DEBIAN_FRONTEND=noninteractive apt install -y  \
+    ros-noetic-trac-ik-lib \
+    libnlopt-dev \
+    libnlopt-cxx-dev
+
+RUN source devel/setup.bash && \
+    wstool set -t src stomp_ros https://github.com/ros-industrial/stomp_ros.git --git -y && \
+    wstool update -t src stomp_ros && \
+    wstool merge -t src src/stomp_ros/dependencies.rosinstall && \
+    wstool update -t src stomp ros_industrial_cmake_boilerplate
+
+################################### BUIlDING THE WHOLE WORKSPACE ###################################
+
+RUN source /opt/ros/noetic/setup.bash && catkin build \
+    amiga_driver \
+    robotiq_3f_gripper_control \
+    robotiq_3f_gripper_joint_state_publisher \
+    robotiq_modbus_tcp \
+    arnie_main \
+    arnie_navigation \
+    arnie_localisation \
+    geometric_shapes \
+    moveit_resources \
+    #prl_grasping \
+    #amiga_cooking_assistant \
+    amiga_moveit_wrapper \
+    collision_ik_moveit_wrapper \
+    relaxed_ik \
+    marker_localisation \
+    stomp_moveit
+
+CMD bash

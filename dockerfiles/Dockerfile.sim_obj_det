@@ -1,0 +1,27 @@
+FROM personalroboticsimperial/prl:ub2004-noetic-cu111-zed
+
+#FROM personalroboticsimperial/prl:ub2004-noetic-cu111-zed
+
+
+
+RUN rm /etc/apt/sources.list.d/cuda.list && \
+    rm /etc/apt/sources.list.d/nvidia-ml.list &&\
+    apt-get update -y && apt-get install vim xorg-dev -y
+
+WORKDIR /ros-ws/
+
+RUN cd src && \
+    git clone --recursive https://github.com/leggedrobotics/darknet_ros.git
+#RUN rosdep install --from-paths /root/ros_ws/src/image_pipeline --ignore-src
+# RUN pip install opencv-python pillow scipy matplotlib
+# RUN pip install v
+# RUN pip3 install torch torchvision torchaudio
+# RUN pip install torch_geometric
+# RUN pip install pyg_lib torch_scatter torch_sparse torch_cluster torch_spline_conv -f https://data.pyg.org/whl/torch-2.0.0+cu117.html
+# RUN pip install open3d
+# RUN pip install pybullet==2.7.9
+# RUN pip install termcolor
+# RUN wget https://repo.anaconda.com/miniconda/Miniconda3-py38_23.3.1-0-Linux-x86_64.sh
+
+
+CMD bash

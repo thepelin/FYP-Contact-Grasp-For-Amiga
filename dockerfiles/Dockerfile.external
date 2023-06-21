@@ -1,0 +1,45 @@
+FROM personalroboticsimperial/prl:amiga_arm_external_deps
+
+# RUN apt-get update -y && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+#     ros-noetic-pointcloud-to-laserscan 
+
+
+RUN apt-get update -y && apt-get install -y ros-noetic-diff-drive-controller ros-noetic-rqt-tf-tree
+
+RUN python -m pip install transforms3d
+
+COPY . /root/ros_ws/src/ur10e_robotiq/
+
+
+RUN source /opt/ros/noetic/setup.bash && catkin build \
+    amiga_driver \
+    robotiq_3f_gripper_control \
+    robotiq_3f_gripper_joint_state_publisher \
+    robotiq_modbus_tcp \
+    arnie_main \
+    arnie_navigation \
+    arnie_localisation \
+    geometric_shapes \
+    moveit_resources \
+    #prl_grasping \
+    #amiga_cooking_assistant \
+    amiga_moveit_wrapper \
+    collision_ik_moveit_wrapper \
+    relaxed_ik \
+    marker_localisation \
+    #prl_ur_kinematics \
+    ur_kinematics \
+    amiga_sim \
+    moveit_ros_control_interface
+    
+
+# COPY amiga_moveit_wrapper /root/ros_ws/src/ur10e_robotiq/amiga_moveit_wrapper
+# COPY amiga_cooking_assistant /root/ros_ws/src/ur10e_robotiq/amiga_cooking_assistant
+# COPY collision_ik_moveit_wrapper /root/ros_ws/src/ur10e_robotiq/collision_ik_moveit_wrapper
+
+# RUN cd src && git clone -b dev  https://github.com/cedricgoubard/relaxed_ik.git 
+
+# RUN source /opt/ros/noetic/setup.bash && catkin build \
+#     amiga_moveit_wrapper amiga_cooking_assistant collision_ik_moveit_wrapper relaxed_ik    
+
+CMD source devel/setup.bash && roscore -p $AMIGA_ROSCORE_PORT

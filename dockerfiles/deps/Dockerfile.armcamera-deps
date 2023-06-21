@@ -1,0 +1,18 @@
+FROM personalroboticsimperial/prl:jetson2004-cuda114-noetic-zed37
+SHELL ["/bin/bash", "-c"] 
+
+COPY . /root/ros_ws/src/ur10e_robotiq/
+
+WORKDIR /root/ros_ws/
+
+RUN cd src/ur10e_robotiq/ && \
+    git clone https://github.com/ImperialCollegeLondon/marker_localisation.git
+
+RUN apt-get update -y && source devel/setup.bash && DEBIAN_FRONTEND=noninteractive rosdep install --rosdistro noetic -y --ignore-src --from-paths ./src/ur10e_robotiq/ 
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    ros-noetic-image-proc 
+
+RUN source devel/setup.bash && catkin build prl_orin_yolov5 amiga_driver prl_spatial_memory
+
+CMD bash
