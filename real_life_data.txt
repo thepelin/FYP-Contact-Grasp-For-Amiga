@@ -1,0 +1,656 @@
+mak%                                                                                                                                                                      (base) ➜  amiga_main git:(main) ✗ make exec
+docker exec -it amiga_ext_pelin /bin/bash
+root@amiga-laptop:~/ros_ws# catkin build contact_graspnet_ros
+---------------------------------------------------------
+Profile:                     default
+Extending:          [cached] /opt/ros/noetic
+Workspace:                   /root/ros_ws
+---------------------------------------------------------
+Build Space:        [exists] /root/ros_ws/build
+Devel Space:        [exists] /root/ros_ws/devel
+Install Space:      [unused] /root/ros_ws/install
+Log Space:          [exists] /root/ros_ws/logs
+Source Space:       [exists] /root/ros_ws/src
+DESTDIR:            [unused] None
+---------------------------------------------------------
+Devel Space Layout:          linked
+Install Space Layout:        None
+---------------------------------------------------------
+Additional CMake Args:       -DRTABMAP_SYNC_MULTI_RGBD=ON
+Additional Make Args:        None
+Additional catkin Make Args: None
+Internal Make Job Server:    True
+Cache Job Environments:      False
+---------------------------------------------------------
+Whitelisted Packages:        None
+Blacklisted Packages:        None
+---------------------------------------------------------
+Workspace configuration appears valid.
+---------------------------------------------------------
+[build] Found '109' packages in 0.0 seconds.                                                                                                                             
+[build] Updating package table.                                                                                                                                          
+Starting  >>> contact_graspnet_ros                                                                                                                                       
+Finished  <<< contact_graspnet_ros                [ 2.5 seconds ]                                                                                                        
+[build] Summary: All 1 packages succeeded!                                                                                                                               
+[build]   Ignored:   108 packages were skipped or are blacklisted.                                                                                                       
+[build]   Warnings:  None.                                                                                                                                               
+[build]   Abandoned: None.                                                                                                                                               
+[build]   Failed:    None.                                                                                                                                               
+[build] Runtime: 2.7 seconds total.                                                                                                                                      
+[build] Note: Workspace packages have changed, please re-source setup files to use them.
+root@amiga-laptop:~/ros_ws# source devel/setup.bash 
+root@amiga-laptop:~/ros_ws# rosrun contact_graspnet_ros object_grab_service.py 
+[ INFO] [1686928302.783821028]: Loading robot model 'amiga'...
+[ WARN] [1686928302.909509644]: IK plugin for group 'arm_no_gripper' relies on deprecated API. Please implement initialize(RobotModel, ...).
+[ INFO] [1686928302.916278198]: Loading robot model 'amiga'...
+[ INFO] [1686928304.106785860]: Ready to take commands for planning group arm_no_gripper.
+Will not grab that for ya
+19
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686928376.749531969]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+18
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686928376.881389348]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+17
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686928377.141979624]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+16
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686928377.262399670]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+15
+
+
+UPSIDE DOWN
+
+
+PLAN TRUE OR NOT: True
+header: 
+  seq: 0
+  stamp: 
+    secs: 1686928388
+    nsecs: 584873438
+  frame_id: "base_link"
+child_frame_id: "amiga_gripper_palm"
+transform: 
+  translation: 
+    x: 0.9565217951672512
+    y: 0.007591141238455779
+    z: 0.9211602288990868
+  rotation: 
+    x: 0.6408525097231105
+    y: -0.17804212384807303
+    z: 0.5385422770009205
+    w: -0.5172825908533187
+[ WARN] [1686928402.163187912]: Fail: ABORTED: No motion plan found. No execution attempted.
+NUMBER OF MATRICIES: 8
+Time: 36.82791209220886
+Number of plans: 5
+19
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686928568.510014114]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+18
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686928582.133916780]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+17
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686928595.096102739]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+16
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686928595.326390970]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+15
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686928608.977719741]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+14
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686928622.569797919]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+13
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686928622.770116048]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+12
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686928623.042046613]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+19
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686928667.879910403]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+18
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686928681.338141907]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+17
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686928693.988057799]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+16
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686928706.766482349]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+15
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686928706.966586322]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+19
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686928766.557834300]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+18
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686928779.675796232]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+17
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686928793.086250356]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+16
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686928806.212857190]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+15
+
+
+UPSIDE DOWN
+
+
+^Croot@amiga-laptop:~/ros_ws# rosrun contact_graspnet_ros object_grab_service.py 
+[ INFO] [1686928827.617057979]: Loading robot model 'amiga'...
+[ WARN] [1686928827.740750789]: IK plugin for group 'arm_no_gripper' relies on deprecated API. Please implement initialize(RobotModel, ...).
+[ INFO] [1686928827.747955152]: Loading robot model 'amiga'...
+[ INFO] [1686928827.825551789]: waitForService: Service [/get_planning_scene] has not been advertised, waiting...
+[ WARN] [1686928832.836497078]: service '/get_planning_scene' not advertised yet. Continue waiting...
+[ INFO] [1686928832.836903221]: waitForService: Service [/get_planning_scene] has not been advertised, waiting...
+[ INFO] [1686928834.493835199]: waitForService: Service [/get_planning_scene] is now available.
+[ INFO] [1686928835.527353503]: Ready to take commands for planning group arm_no_gripper.
+Will not grab that for ya
+19
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686928871.695396603]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+18
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686928882.104933144]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+17
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686928892.893656800]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+16
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686928903.648697881]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+15
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686928914.441205422]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+19
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686928961.600868430]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+18
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686928963.180120905]: Fail: ABORTED: Motion plan was found but it seems to be invalid (possibly due to postprocessing). Not executing.
+PLAN TRUE OR NOT: False
+17
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686928974.407886335]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+16
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686928986.056829754]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+15
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686928996.432384152]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+14
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686929006.868354369]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+13
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686929007.949546327]: Fail: ABORTED: Motion plan was found but it seems to be invalid (possibly due to postprocessing). Not executing.
+PLAN TRUE OR NOT: False
+12
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686929019.151072631]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+11
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686929030.150306751]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+10
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686929030.456173651]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+19
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686929269.724840284]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+18
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686929280.539731319]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+17
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686929291.226682375]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+16
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686929301.848860885]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+15
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686929312.771751682]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+14
+
+
+UPSIDE DOWN
+
+
+PLAN TRUE OR NOT: True
+header: 
+  seq: 0
+  stamp: 
+    secs: 1686929334
+    nsecs: 645348310
+  frame_id: "base_link"
+child_frame_id: "amiga_gripper_palm"
+transform: 
+  translation: 
+    x: 1.1038202961915622
+    y: -0.0610499352754682
+    z: 0.9508925189020192
+  rotation: 
+    x: 0.7413457878141144
+    y: 0.21449508471650303
+    z: -0.03838640148283495
+    w: -0.6347635510203219
+[ WARN] [1686929346.895787975]: Fail: ABORTED: No motion plan found. No execution attempted.
+NUMBER OF MATRICIES: 10
+Time: 103.55473279953003
+Number of plans: 6
+19
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686929546.142694323]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+18
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686929546.281647037]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+17
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686929546.416279564]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+16
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686929546.743523192]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+15
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686929558.473488773]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+14
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686929571.561023433]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+13
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686929585.571055438]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+12
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686929597.482142737]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+19
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686929650.276461667]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+18
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686929663.045262764]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+17
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686929675.383099309]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+16
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686929687.589999727]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+15
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686929702.935113580]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+14
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686929717.033923117]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+13
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686929731.662095798]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+12
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686929743.548119016]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+11
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686929743.769033960]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+19
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686930199.305856634]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+18
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686930211.803444649]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+17
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686930224.189590945]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+16
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686930236.298042589]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+15
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686930249.105854030]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+14
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686930262.669693384]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+13
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686930277.367889907]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+12
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686930291.076036265]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+11
+
+
+UPSIDE DOWN
+
+
+[ WARN] [1686930303.330272153]: Fail: ABORTED: No motion plan found. No execution attempted.
+PLAN TRUE OR NOT: False
+

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sdf version="1.6">
+    <model name="bowl">
+      <gravity>False</gravity>
+      <link name="link">
+        <gravity>False</gravity>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://fork/fork.dae</uri>
+              <scale>2 2 2</scale> 
+            </mesh>
+          </geometry>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://fork/fork.dae</uri>
+              <scale>2 2 2</scale> 
+            </mesh>
+          </geometry>
+        </collision>
+        <inertial>
+          <mass>0.1</mass>
+          <inertia>
+            <ixx>0.0</ixx>
+            <iyy>0.0</iyy>
+            <izz>0.0</izz>
+            <ixy>0.0</ixy>
+            <ixz>0.0</ixz>
+            <iyz>0.0</iyz>
+          </inertia>
+        </inertial>
+      </link>
+    </model>
+</sdf>

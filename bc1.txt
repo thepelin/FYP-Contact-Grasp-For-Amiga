@@ -1,0 +1,150 @@
+0
+Success: True
+Time: 99.45775604248047
+Total # of poses: 16
+Executed pose #: 2
+1
+Success: False
+Time: 527.1882803440094
+Total # of poses: 10
+Executed pose #: 10
+2
+Success: True
+Time: 129.05986499786377
+Total # of poses: 10
+Executed pose #: 3
+3
+Success: True
+Time: 90.72768259048462
+Total # of poses: 11
+Executed pose #: 2
+4
+Success: True
+Time: 175.73933172225952
+Total # of poses: 20
+Executed pose #: 4
+5
+Success: True
+Time: 208.5223479270935
+Total # of poses: 13
+Executed pose #: 1
+6
+Success: True
+Time: 79.08905601501465
+Total # of poses: 10
+Executed pose #: 2
+7
+Success: True
+Time: 117.13760018348694
+Total # of poses: 11
+Executed pose #: 1
+8
+Success: True
+Time: 352.1023428440094
+Total # of poses: 15
+Executed pose #: 4
+9
+Success: True
+Time: 35.87965393066406
+Total # of poses: 11
+Executed pose #: 1
+10
+Success: True
+Time: 69.83735466003418
+Total # of poses: 19
+Executed pose #: 2
+11
+Success: True
+Time: 153.2398340702057
+Total # of poses: 17
+Executed pose #: 2
+12
+Success: True
+Time: 48.22502541542053
+Total # of poses: 17
+Executed pose #: 1
+13
+Success: True
+Time: 102.19309902191162
+Total # of poses: 15
+Executed pose #: 2
+14
+Success: True
+Time: 41.381744146347046
+Total # of poses: 13
+Executed pose #: 1
+15
+Success: True
+Time: 68.33001208305359
+Total # of poses: 10
+Executed pose #: 1
+16
+Success: True
+Time: 37.55948829650879
+Total # of poses: 14
+Executed pose #: 1
+17
+Success: True
+Time: 32.05718803405762
+Total # of poses: 16
+Executed pose #: 1
+18
+Success: True
+Time: 319.1850309371948
+Total # of poses: 25
+Executed pose #: 1
+19
+Success: False
+Time: 544.4168922901154
+Total # of poses: 13
+Executed pose #: 13
+20
+Success: True
+Time: 93.54175043106079
+Total # of poses: 14
+Executed pose #: 2
+21
+Success: True
+Time: 141.65612363815308
+Total # of poses: 15
+Executed pose #: 3
+22
+Success: False
+Time: 893.2143681049347
+Total # of poses: 22
+Executed pose #: 21
+23
+Success: True
+Time: 339.82650876045227
+Total # of poses: 11
+Executed pose #: 4
+24
+Success: True
+Time: 118.27815675735474
+Total # of poses: 14
+Executed pose #: 1
+25
+Success: False
+Time: 471.90984869003296
+Total # of poses: 11
+Executed pose #: 11
+26
+Success: True
+Time: 81.32927560806274
+Total # of poses: 12
+Executed pose #: 1
+27
+Success: True
+Time: 35.51281213760376
+Total # of poses: 18
+Executed pose #: 1
+28
+Success: True
+Time: 36.65179634094238
+Total # of poses: 10
+Executed pose #: 1
+29
+Success: True
+Time: 210.09550523757935
+Total # of poses: 14
+Executed pose #: 7

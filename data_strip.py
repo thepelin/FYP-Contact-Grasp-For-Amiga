@@ -1,0 +1,1421 @@
+import numpy as np
+import pandas as pd
+import statsmodels.api as sm
+from statsmodels.formula.api import ols
+import matplotlib.pyplot as plt
+from scipy.stats import pearsonr
+
+
+success_list = []
+time_list = []
+total_poses_list = []
+executed_pose_list = []
+
+data = """
+0
+Success: True
+Time: 50.06582736968994
+Total # of poses: 18
+Executed pose #: 1
+1
+Success: True
+Time: 94.35711860656738
+Total # of poses: 15
+Executed pose #: 2
+2
+Success: True
+Time: 99.13033986091614
+Total # of poses: 18
+Executed pose #: 1
+3
+Success: True
+Time: 35.704997539520264
+Total # of poses: 15
+Executed pose #: 1
+4
+Success: True
+Time: 36.85905575752258
+Total # of poses: 12
+Executed pose #: 1
+5
+Success: True
+Time: 90.62000870704651
+Total # of poses: 11
+Executed pose #: 3
+6
+Success: True
+Time: 47.50689101219177
+Total # of poses: 21
+Executed pose #: 1
+7
+Success: True
+Time: 36.30323314666748
+Total # of poses: 13
+Executed pose #: 1
+8
+Success: True
+Time: 172.46479177474976
+Total # of poses: 14
+Executed pose #: 4
+9
+Success: True
+Time: 75.16289258003235
+Total # of poses: 19
+Executed pose #: 2
+10
+Success: True
+Time: 140.6986699104309
+Total # of poses: 21
+Executed pose #: 4
+11
+Success: True
+Time: 37.75090527534485
+Total # of poses: 20
+Executed pose #: 1
+12
+Success: True
+Time: 378.7156870365143
+Total # of poses: 17
+Executed pose #: 9
+13
+Success: True
+Time: 150.31049585342407
+Total # of poses: 20
+Executed pose #: 3
+14
+Success: True
+Time: 49.33567667007446
+Total # of poses: 19
+Executed pose #: 1
+15
+Success: True
+Time: 1493.1414241790771
+Total # of poses: 20
+Executed pose #: 4
+16
+Success: True
+Time: 33.87025594711304
+Total # of poses: 16
+Executed pose #: 1
+17
+Success: True
+Time: 100.34472846984863
+Total # of poses: 15
+Executed pose #: 2
+18
+Success: True
+Time: 217.05871748924255
+Total # of poses: 13
+Executed pose #: 5
+19
+Success: True
+Time: 191.9432201385498
+Total # of poses: 19
+Executed pose #: 4
+20
+Success: True
+Time: 93.95164036750793
+Total # of poses: 17
+Executed pose #: 2
+21
+Success: True
+Time: 48.00286412239075
+Total # of poses: 18
+Executed pose #: 1
+22
+Success: True
+Time: 94.5100793838501
+Total # of poses: 16
+Executed pose #: 3
+23
+Success: True
+Time: 48.1135368347168
+Total # of poses: 15
+Executed pose #: 1
+24
+Success: True
+Time: 115.15223598480225
+Total # of poses: 19
+Executed pose #: 2
+25
+Success: True
+Time: 173.5490584373474
+Total # of poses: 22
+Executed pose #: 3
+26
+Success: True
+Time: 49.104727268218994
+Total # of poses: 20
+Executed pose #: 1
+27
+Success: True
+Time: 58.02595901489258
+Total # of poses: 18
+Executed pose #: 1
+28
+Success: True
+Time: 74.79897284507751
+Total # of poses: 14
+Executed pose #: 1
+29
+Success: True
+Time: 251.20662093162537
+Total # of poses: 20
+Executed pose #: 6
+0
+Success: True
+Time: 378.2784821987152
+Total # of poses: 17
+Executed pose #: 10
+1
+Success: False
+Time: 487.16699028015137
+Total # of poses: 10
+Executed pose #: 10
+2
+Success: True
+Time: 47.13908386230469
+Total # of poses: 20
+Executed pose #: 1
+3
+Success: True
+Time: 409.0931673049927
+Total # of poses: 23
+Executed pose #: 9
+4
+Success: True
+Time: 251.7709219455719
+Total # of poses: 22
+Executed pose #: 9
+5
+Success: True
+Time: 97.57529926300049
+Total # of poses: 18
+Executed pose #: 2
+6
+Success: True
+Time: 487.9969263076782
+Total # of poses: 19
+Executed pose #: 10
+7
+Success: True
+Time: 485.0335621833801
+Total # of poses: 17
+Executed pose #: 12
+8
+Success: True
+Time: 105.67064833641052
+Total # of poses: 10
+Executed pose #: 1
+9
+Success: True
+Time: 72.5553936958313
+Total # of poses: 17
+Executed pose #: 1
+10
+Success: True
+Time: 35.46007513999939
+Total # of poses: 14
+Executed pose #: 1
+11
+Success: True
+Time: 86.1719172000885
+Total # of poses: 19
+Executed pose #: 2
+12
+Success: True
+Time: 116.43079471588135
+Total # of poses: 28
+Executed pose #: 3
+13
+Success: True
+Time: 82.97014427185059
+Total # of poses: 21
+Executed pose #: 2
+14
+Success: True
+Time: 153.8930265903473
+Total # of poses: 24
+Executed pose #: 4
+15
+Success: True
+Time: 184.28043007850647
+Total # of poses: 21
+Executed pose #: 5
+16
+Success: True
+Time: 37.70472002029419
+Total # of poses: 18
+Executed pose #: 1
+17
+Success: True
+Time: 36.774362325668335
+Total # of poses: 17
+Executed pose #: 1
+18
+Success: True
+Time: 862.734836101532
+Total # of poses: 22
+Executed pose #: 21
+19
+Success: True
+Time: 36.99094080924988
+Total # of poses: 33
+Executed pose #: 1
+20
+Success: True
+Time: 133.20514702796936
+Total # of poses: 33
+Executed pose #: 3
+21
+Success: True
+Time: 83.14203429222107
+Total # of poses: 18
+Executed pose #: 2
+22
+Success: True
+Time: 83.33877277374268
+Total # of poses: 31
+Executed pose #: 2
+23
+Success: True
+Time: 234.10716915130615
+Total # of poses: 24
+Executed pose #: 6
+24
+Success: True
+Time: 36.33044648170471
+Total # of poses: 31
+Executed pose #: 1
+25
+Success: True
+Time: 35.889317989349365
+Total # of poses: 27
+Executed pose #: 1
+26
+Success: True
+Time: 37.20837450027466
+Total # of poses: 47
+Executed pose #: 1
+27
+Success: True
+Time: 36.21320462226868
+Total # of poses: 43
+Executed pose #: 1
+28
+Success: True
+Time: 37.620851278305054
+Total # of poses: 45
+Executed pose #: 1
+29
+Success: True
+Time: 118.53649139404297
+Total # of poses: 41
+Executed pose #: 3
+0
+Success: True
+Time: 99.45775604248047
+Total # of poses: 16
+Executed pose #: 2
+1
+Success: False
+Time: 527.1882803440094
+Total # of poses: 10
+Executed pose #: 10
+2
+Success: True
+Time: 129.05986499786377
+Total # of poses: 10
+Executed pose #: 3
+3
+Success: True
+Time: 90.72768259048462
+Total # of poses: 11
+Executed pose #: 2
+4
+Success: True
+Time: 175.73933172225952
+Total # of poses: 20
+Executed pose #: 4
+5
+Success: True
+Time: 208.5223479270935
+Total # of poses: 13
+Executed pose #: 1
+6
+Success: True
+Time: 79.08905601501465
+Total # of poses: 10
+Executed pose #: 2
+7
+Success: True
+Time: 117.13760018348694
+Total # of poses: 11
+Executed pose #: 1
+8
+Success: True
+Time: 352.1023428440094
+Total # of poses: 15
+Executed pose #: 4
+9
+Success: True
+Time: 35.87965393066406
+Total # of poses: 11
+Executed pose #: 1
+10
+Success: True
+Time: 69.83735466003418
+Total # of poses: 19
+Executed pose #: 2
+11
+Success: True
+Time: 153.2398340702057
+Total # of poses: 17
+Executed pose #: 2
+12
+Success: True
+Time: 48.22502541542053
+Total # of poses: 17
+Executed pose #: 1
+13
+Success: True
+Time: 102.19309902191162
+Total # of poses: 15
+Executed pose #: 2
+14
+Success: True
+Time: 41.381744146347046
+Total # of poses: 13
+Executed pose #: 1
+15
+Success: True
+Time: 68.33001208305359
+Total # of poses: 10
+Executed pose #: 1
+16
+Success: True
+Time: 37.55948829650879
+Total # of poses: 14
+Executed pose #: 1
+17
+Success: True
+Time: 32.05718803405762
+Total # of poses: 16
+Executed pose #: 1
+18
+Success: True
+Time: 319.1850309371948
+Total # of poses: 25
+Executed pose #: 1
+19
+Success: False
+Time: 544.4168922901154
+Total # of poses: 13
+Executed pose #: 13
+20
+Success: True
+Time: 93.54175043106079
+Total # of poses: 14
+Executed pose #: 2
+21
+Success: True
+Time: 141.65612363815308
+Total # of poses: 15
+Executed pose #: 3
+22
+Success: False
+Time: 893.2143681049347
+Total # of poses: 22
+Executed pose #: 21
+23
+Success: True
+Time: 339.82650876045227
+Total # of poses: 11
+Executed pose #: 4
+24
+Success: True
+Time: 118.27815675735474
+Total # of poses: 14
+Executed pose #: 1
+25
+Success: False
+Time: 471.90984869003296
+Total # of poses: 11
+Executed pose #: 11
+26
+Success: True
+Time: 81.32927560806274
+Total # of poses: 12
+Executed pose #: 1
+27
+Success: True
+Time: 35.51281213760376
+Total # of poses: 18
+Executed pose #: 1
+28
+Success: True
+Time: 36.65179634094238
+Total # of poses: 10
+Executed pose #: 1
+29
+Success: True
+Time: 210.09550523757935
+Total # of poses: 14
+Executed pose #: 7
+0
+Success: True
+Time: 186.4004464149475
+Total # of poses: 11
+Executed pose #: 4
+1
+Success: True
+Time: 271.248735666275
+Total # of poses: 10
+Executed pose #: 6
+2
+Success: True
+Time: 141.06569528579712
+Total # of poses: 15
+Executed pose #: 5
+3
+Success: True
+Time: 33.827253341674805
+Total # of poses: 17
+Executed pose #: 1
+4
+Success: True
+Time: 87.27654075622559
+Total # of poses: 14
+Executed pose #: 2
+5
+Success: True
+Time: 172.60557103157043
+Total # of poses: 12
+Executed pose #: 5
+6
+Success: True
+Time: 192.76703143119812
+Total # of poses: 11
+Executed pose #: 1
+7
+Success: True
+Time: 55.95048975944519
+Total # of poses: 11
+Executed pose #: 1
+8
+Success: True
+Time: 550.4938282966614
+Total # of poses: 11
+Executed pose #: 1
+9
+Success: True
+Time: 135.15701270103455
+Total # of poses: 11
+Executed pose #: 3
+10
+Success: True
+Time: 136.45752811431885
+Total # of poses: 12
+Executed pose #: 3
+11
+Success: True
+Time: 367.8685975074768
+Total # of poses: 10
+Executed pose #: 9
+12
+Success: True
+Time: 105.60829639434814
+Total # of poses: 11
+Executed pose #: 4
+13
+Success: True
+Time: 247.5098717212677
+Total # of poses: 12
+Executed pose #: 7
+14
+Success: True
+Time: 131.0657238960266
+Total # of poses: 11
+Executed pose #: 3
+15
+Success: True
+Time: 195.1705162525177
+Total # of poses: 18
+Executed pose #: 6
+16
+Success: True
+Time: 67.86184978485107
+Total # of poses: 18
+Executed pose #: 1
+17
+Success: False
+Time: 537.6697299480438
+Total # of poses: 11
+Executed pose #: 11
+18
+Success: True
+Time: 278.05137157440186
+Total # of poses: 17
+Executed pose #: 5
+19
+Success: True
+Time: 102.72050404548645
+Total # of poses: 12
+Executed pose #: 2
+20
+Success: True
+Time: 130.74414896965027
+Total # of poses: 11
+Executed pose #: 2
+21
+Success: True
+Time: 375.70818734169006
+Total # of poses: 19
+Executed pose #: 2
+22
+Success: True
+Time: 48.0110547542572
+Total # of poses: 15
+Executed pose #: 1
+23
+Success: False
+Time: 929.9042918682098
+Total # of poses: 15
+Executed pose #: 15
+24
+Success: True
+Time: 175.54218339920044
+Total # of poses: 23
+Executed pose #: 1
+25
+Success: True
+Time: 162.65010905265808
+Total # of poses: 21
+Executed pose #: 3
+26
+Success: True
+Time: 79.75545191764832
+Total # of poses: 19
+Executed pose #: 1
+27
+Success: True
+Time: 121.63886880874634
+Total # of poses: 17
+Executed pose #: 2
+28
+Success: True
+Time: 382.2815511226654
+Total # of poses: 14
+Executed pose #: 12
+29
+Success: True
+Time: 75.15852379798889
+Total # of poses: 16
+Executed pose #: 2
+0
+Success: True
+Time: 96.16186881065369
+Total # of poses: 39
+Executed pose #: 2
+1
+Success: True
+Time: 335.4351272583008
+Total # of poses: 36
+Executed pose #: 8
+2
+Success: True
+Time: 143.06471180915833
+Total # of poses: 42
+Executed pose #: 3
+3
+Success: True
+Time: 969.1642949581146
+Total # of poses: 37
+Executed pose #: 2
+4
+Success: True
+Time: 229.96356010437012
+Total # of poses: 32
+Executed pose #: 6
+5
+Success: True
+Time: 134.57488870620728
+Total # of poses: 44
+Executed pose #: 4
+6
+Success: True
+Time: 37.42636680603027
+Total # of poses: 40
+Executed pose #: 1
+7
+Success: True
+Time: 99.02966451644897
+Total # of poses: 39
+Executed pose #: 4
+8
+Success: True
+Time: 80.89062142372131
+Total # of poses: 41
+Executed pose #: 2
+9
+Success: True
+Time: 37.031137228012085
+Total # of poses: 37
+Executed pose #: 1
+10
+Success: True
+Time: 121.5269067287445
+Total # of poses: 42
+Executed pose #: 6
+11
+Success: True
+Time: 431.5611605644226
+Total # of poses: 36
+Executed pose #: 11
+12
+Success: True
+Time: 77.20302057266235
+Total # of poses: 40
+Executed pose #: 2
+13
+Success: True
+Time: 39.27892780303955
+Total # of poses: 41
+Executed pose #: 1
+14
+Success: True
+Time: 74.25285053253174
+Total # of poses: 34
+Executed pose #: 2
+15
+Success: True
+Time: 281.6484546661377
+Total # of poses: 36
+Executed pose #: 9
+16
+Success: True
+Time: 149.49664282798767
+Total # of poses: 40
+Executed pose #: 4
+17
+Success: True
+Time: 823.8280453681946
+Total # of poses: 43
+Executed pose #: 4
+18
+Success: True
+Time: 129.57632088661194
+Total # of poses: 42
+Executed pose #: 6
+19
+Success: True
+Time: 97.57850694656372
+Total # of poses: 36
+Executed pose #: 2
+20
+Success: True
+Time: 136.5237331390381
+Total # of poses: 39
+Executed pose #: 3
+21
+Success: True
+Time: 316.6624422073364
+Total # of poses: 41
+Executed pose #: 9
+22
+Success: True
+Time: 94.84895443916321
+Total # of poses: 42
+Executed pose #: 4
+23
+Success: True
+Time: 103.14448928833008
+Total # of poses: 35
+Executed pose #: 2
+24
+Success: True
+Time: 360.3749635219574
+Total # of poses: 39
+Executed pose #: 9
+25
+Success: True
+Time: 234.06762075424194
+Total # of poses: 42
+Executed pose #: 6
+26
+Success: True
+Time: 119.53341221809387
+Total # of poses: 43
+Executed pose #: 3
+27
+Success: True
+Time: 478.153315782547
+Total # of poses: 39
+Executed pose #: 18
+28
+Success: True
+Time: 338.96436071395874
+Total # of poses: 41
+Executed pose #: 8
+29
+Success: True
+Time: 34.496723890304565
+Total # of poses: 40
+Executed pose #: 1
+0
+Success: True
+Time: 220.85625529289246
+Total # of poses: 70
+Executed pose #: 6
+1
+Success: True
+Time: 220.13697981834412
+Total # of poses: 78
+Executed pose #: 6
+2
+Success: True
+Time: 154.48774218559265
+Total # of poses: 70
+Executed pose #: 4
+3
+Success: True
+Time: 256.81308341026306
+Total # of poses: 75
+Executed pose #: 7
+4
+Success: True
+Time: 435.4830598831177
+Total # of poses: 80
+Executed pose #: 12
+5
+Success: True
+Time: 40.57771611213684
+Total # of poses: 76
+Executed pose #: 1
+6
+Success: True
+Time: 70.66231608390808
+Total # of poses: 75
+Executed pose #: 2
+7
+Success: True
+Time: 80.99419260025024
+Total # of poses: 72
+Executed pose #: 2
+8
+Success: True
+Time: 195.09472560882568
+Total # of poses: 74
+Executed pose #: 11
+9
+Success: True
+Time: 87.33784914016724
+Total # of poses: 71
+Executed pose #: 2
+10
+Success: True
+Time: 37.25056219100952
+Total # of poses: 74
+Executed pose #: 1
+11
+Success: True
+Time: 74.24602270126343
+Total # of poses: 74
+Executed pose #: 2
+12
+Success: True
+Time: 37.21684241294861
+Total # of poses: 74
+Executed pose #: 1
+13
+Success: True
+Time: 189.68064761161804
+Total # of poses: 79
+Executed pose #: 12
+14
+Success: True
+Time: 355.6392719745636
+Total # of poses: 73
+Executed pose #: 12
+15
+Success: True
+Time: 86.74825429916382
+Total # of poses: 75
+Executed pose #: 2
+16
+Success: True
+Time: 106.59250330924988
+Total # of poses: 76
+Executed pose #: 3
+17
+Success: True
+Time: 112.4117603302002
+Total # of poses: 78
+Executed pose #: 3
+18
+Success: True
+Time: 38.526854276657104
+Total # of poses: 74
+Executed pose #: 1
+19
+Success: True
+Time: 35.755988359451294
+Total # of poses: 73
+Executed pose #: 1
+20
+Success: True
+Time: 91.48907613754272
+Total # of poses: 73
+Executed pose #: 2
+21
+Success: True
+Time: 124.15943264961243
+Total # of poses: 81
+Executed pose #: 3
+22
+Success: True
+Time: 34.69755434989929
+Total # of poses: 81
+Executed pose #: 1
+23
+Success: True
+Time: 48.17396807670593
+Total # of poses: 74
+Executed pose #: 1
+24
+Success: True
+Time: 35.282904863357544
+Total # of poses: 84
+Executed pose #: 1
+25
+Success: True
+Time: 251.54009366035461
+Total # of poses: 67
+Executed pose #: 5
+26
+Success: True
+Time: 42.444931507110596
+Total # of poses: 80
+Executed pose #: 1
+27
+Success: True
+Time: 89.67043828964233
+Total # of poses: 76
+Executed pose #: 2
+28
+Success: True
+Time: 314.2491011619568
+Total # of poses: 72
+Executed pose #: 12
+29
+Success: True
+Time: 163.7913703918457
+Total # of poses: 77
+Executed pose #: 4
+0
+Success: True
+Time: 76.724538564682
+Total # of poses: 35
+Executed pose #: 2
+1
+Success: True
+Time: 181.17921948432922
+Total # of poses: 34
+Executed pose #: 5
+2
+Success: True
+Time: 81.65939283370972
+Total # of poses: 33
+Executed pose #: 2
+3
+Success: True
+Time: 100.74879693984985
+Total # of poses: 30
+Executed pose #: 3
+4
+Success: True
+Time: 94.30808329582214
+Total # of poses: 34
+Executed pose #: 3
+5
+Success: True
+Time: 31.382999420166016
+Total # of poses: 30
+Executed pose #: 1
+6
+Success: True
+Time: 81.00132131576538
+Total # of poses: 37
+Executed pose #: 2
+7
+Success: True
+Time: 88.45270109176636
+Total # of poses: 31
+Executed pose #: 2
+8
+Success: True
+Time: 216.82451224327087
+Total # of poses: 33
+Executed pose #: 6
+9
+Success: True
+Time: 31.316470861434937
+Total # of poses: 38
+Executed pose #: 1
+10
+Success: True
+Time: 115.95471119880676
+Total # of poses: 34
+Executed pose #: 3
+11
+Success: True
+Time: 224.99905800819397
+Total # of poses: 30
+Executed pose #: 6
+12
+Success: True
+Time: 76.5138201713562
+Total # of poses: 26
+Executed pose #: 2
+13
+Success: True
+Time: 28.491722106933594
+Total # of poses: 29
+Executed pose #: 1
+14
+Success: True
+Time: 219.3085422515869
+Total # of poses: 33
+Executed pose #: 5
+15
+Success: True
+Time: 30.611446142196655
+Total # of poses: 33
+Executed pose #: 1
+16
+Success: True
+Time: 203.22245001792908
+Total # of poses: 32
+Executed pose #: 5
+17
+Success: True
+Time: 94.29393935203552
+Total # of poses: 26
+Executed pose #: 2
+18
+Success: True
+Time: 238.5062017440796
+Total # of poses: 24
+Executed pose #: 5
+19
+Success: True
+Time: 63.3030846118927
+Total # of poses: 44
+Executed pose #: 2
+20
+Success: True
+Time: 33.38298487663269
+Total # of poses: 34
+Executed pose #: 1
+21
+Success: True
+Time: 32.908695459365845
+Total # of poses: 34
+Executed pose #: 1
+22
+Success: True
+Time: 352.4730803966522
+Total # of poses: 38
+Executed pose #: 8
+23
+Success: True
+Time: 42.52528738975525
+Total # of poses: 39
+Executed pose #: 1
+24
+Success: True
+Time: 198.78281140327454
+Total # of poses: 42
+Executed pose #: 5
+25
+Success: True
+Time: 212.12821650505066
+Total # of poses: 39
+Executed pose #: 5
+26
+Success: True
+Time: 38.20110607147217
+Total # of poses: 36
+Executed pose #: 1
+27
+Success: True
+Time: 61.74222207069397
+Total # of poses: 34
+Executed pose #: 2
+28
+Success: True
+Time: 32.66812229156494
+Total # of poses: 37
+Executed pose #: 1
+29
+Success: True
+Time: 29.267153024673462
+Total # of poses: 39
+Executed pose #: 1
+0
+Success: True
+Time: 97.81913208961487
+Total # of poses: 70
+Executed pose #: 2
+1
+Success: True
+Time: 91.56160736083984
+Total # of poses: 70
+Executed pose #: 3
+0
+Success: True
+Time: 1982.5355515480042
+Total # of poses: 58
+Executed pose #: 17
+0
+Success: True
+Time: 195.920081615448
+Total # of poses: 75
+Executed pose #: 5
+1
+Success: True
+Time: 36.61380481719971
+Total # of poses: 66
+Executed pose #: 1
+2
+Success: True
+Time: 34.016475200653076
+Total # of poses: 73
+Executed pose #: 1
+3
+Success: True
+Time: 33.687216997146606
+Total # of poses: 63
+Executed pose #: 1
+4
+Success: True
+Time: 67.01757001876831
+Total # of poses: 75
+Executed pose #: 2
+5
+Success: False
+Time: 691.1653337478638
+Total # of poses: 67
+Executed pose #: 21
+6
+Success: True
+Time: 101.69354629516602
+Total # of poses: 83
+Executed pose #: 2
+7
+Success: True
+Time: 235.01318192481995
+Total # of poses: 80
+Executed pose #: 7
+8
+Success: False
+Time: 756.8859069347382
+Total # of poses: 83
+Executed pose #: 21
+9
+Success: True
+Time: 1245.3294639587402
+Total # of poses: 83
+Executed pose #: 1
+0
+Success: True
+Time: 192.46600365638733
+Total # of poses: 62
+Executed pose #: 6
+1
+Success: True
+Time: 28.390685558319092
+Total # of poses: 58
+Executed pose #: 1
+0
+Success: True
+Time: 226.57614636421204
+Total # of poses: 64
+Executed pose #: 12
+0
+Success: True
+Time: 31.318745136260986
+Total # of poses: 74
+Executed pose #: 1
+1
+Success: True
+Time: 64.44146275520325
+Total # of poses: 62
+Executed pose #: 2
+2
+Success: True
+Time: 66.90201306343079
+Total # of poses: 73
+Executed pose #: 2
+3
+Success: True
+Time: 35.733327865600586
+Total # of poses: 76
+Executed pose #: 1
+4
+Success: True
+Time: 30.99247431755066
+Total # of poses: 74
+Executed pose #: 1
+5
+Success: True
+Time: 32.80080842971802
+Total # of poses: 61
+Executed pose #: 1
+6
+Success: True
+Time: 33.25328350067139
+Total # of poses: 69
+Executed pose #: 1
+7
+Success: True
+Time: 357.0908329486847
+Total # of poses: 63
+Executed pose #: 10
+8
+Success: True
+Time: 98.46224212646484
+Total # of poses: 72
+Executed pose #: 3
+9
+Success: True
+Time: 39.1990602016449
+Total # of poses: 62
+Executed pose #: 1
+10
+Success: True
+Time: 32.53449892997742
+Total # of poses: 65
+Executed pose #: 1
+11
+Success: True
+Time: 84.13474678993225
+Total # of poses: 63
+Executed pose #: 2
+12
+Success: True
+Time: 43.752832651138306
+Total # of poses: 65
+Executed pose #: 1
+13
+Success: True
+Time: 74.3759434223175
+Total # of poses: 73
+Executed pose #: 2
+"""
+
+lines = data.strip().split('\n')
+
+for i in range(0, len(lines), 5):
+    value = lines[i+1].split(': ')[1]
+    success = 1 if value == "True" else 0
+    time = float(lines[i+2].split(': ')[1])
+    total_poses = int(lines[i+3].split(': ')[1])
+    executed_pose = int(lines[i+4].split(': ')[1])
+    
+    success_list.append(success)
+    time_list.append(time)
+    total_poses_list.append(total_poses)
+    executed_pose_list.append(executed_pose)
+
+print("Success:", success_list)
+print("Time:", time_list)
+print("Total # of poses:", total_poses_list)
+print("Executed pose #:", executed_pose_list)
+
+df = pd.DataFrame({'X': np.repeat(['B', 'K'], 120),
+                   'Y': np.tile(np.repeat(['U', 'C'], 60), 2),
+                   'Z': np.tile(np.repeat([1, 4], 30), 4),
+                   'success_list': success_list})
+
+#perform three-way ANOVA
+model = ols("""success_list ~ C(X) + C(Y) + C(Z) +
+               C(X):C(Y) + C(X):C(Z) + C(Y):C(Z) +
+               C(X):C(Y):C(Z)""", data=df).fit()
+print("Success:")
+print(sm.stats.anova_lm(model, typ=2))
+
+df = pd.DataFrame({'X': np.repeat(['B', 'K'], 120),
+                   'Y': np.tile(np.repeat(['U', 'C'], 60), 2),
+                   'Z': np.tile(np.repeat([1, 4], 30), 4),
+                   'time_list': time_list})
+
+#perform three-way ANOVA
+model = ols("""time_list ~ C(X) + C(Y) + C(Z) +
+               C(X):C(Y) + C(X):C(Z) + C(Y):C(Z) +
+               C(X):C(Y):C(Z)""", data=df).fit()
+
+print("Time:")
+print(sm.stats.anova_lm(model, typ=2))
+
+df = pd.DataFrame({'X': np.repeat(['B', 'K'], 120),
+                   'Y': np.tile(np.repeat(['U', 'C'], 60), 2),
+                   'Z': np.tile(np.repeat([1, 4], 30), 4),
+                   'total_poses_list': total_poses_list})
+
+#perform three-way ANOVA
+model = ols("""total_poses_list ~ C(X) + C(Y) + C(Z) +
+               C(X):C(Y) + C(X):C(Z) + C(Y):C(Z) +
+               C(X):C(Y):C(Z)""", data=df).fit()
+
+print("Total # of poses:")
+print(sm.stats.anova_lm(model, typ=2))
+
+df = pd.DataFrame({'X': np.repeat(['B', 'K'], 120),
+                   'Y': np.tile(np.repeat(['U', 'C'], 60), 2),
+                   'Z': np.tile(np.repeat([1, 4], 30), 4),
+                   'executed_pose_list': executed_pose_list})
+
+#perform three-way ANOVA
+model = ols("""executed_pose_list ~ C(X) + C(Y) + C(Z) +
+               C(X):C(Y) + C(X):C(Z) + C(Y):C(Z) +
+               C(X):C(Y):C(Z)""", data=df).fit()
+
+print("Executed pose #:")
+print(sm.stats.anova_lm(model, typ=2))
+
+time_sublists = [time_list[i:i+30] for i in range(0, len(time_list), 30)]
+
+# Combine the data
+data = time_sublists
+
+# Create the plot
+fig, ax = plt.subplots()
+
+# Create box plots
+box_plot = ax.boxplot(data, vert=False)
+
+# Add labels and title
+ax.set_yticklabels(['A1B1C1', 'A1B1C2', 'A1B2C1','A1B2C2', 'A2B1C1', 'A2B1C2','A2B2C1', 'A2B2C2'])
+ax.set_ylabel('Dataset')
+ax.set_xlabel('Value')
+ax.set_title('Distribution of Time Data')
+
+# Add mean indicators
+mean_values = [np.mean(d) for d in data]
+positions = range(1, len(data) + 1)
+ax.plot(mean_values, positions, marker='o', linestyle='', color='red', label='Mean')
+
+# Add median indicators
+median_values = [np.median(d) for d in data]
+ax.plot(median_values, positions, marker='s', linestyle='', color='green', label='Median')
+
+# Add legend
+ax.legend()
+
+# Display the plot
+plt.savefig('time_dis.png', dpi=300, bbox_inches='tight')
+
+
+pose_sublists = [total_poses_list[i:i+30] for i in range(0, len(total_poses_list), 30)]
+
+# Combine the data
+data = pose_sublists
+
+# Create the plot
+fig, ax = plt.subplots()
+
+# Create box plots
+box_plot = ax.boxplot(data, vert=False)
+
+# Add labels and title
+ax.set_yticklabels(['A1B1C1', 'A1B1C2', 'A1B2C1','A1B2C2', 'A2B1C1', 'A2B1C2','A2B2C1', 'A2B2C2'])
+ax.set_ylabel('Dataset')
+ax.set_xlabel('Value')
+ax.set_title('Distribution of Total Pose Data')
+
+# Add mean indicators
+mean_values = [np.mean(d) for d in data]
+positions = range(1, len(data) + 1)
+ax.plot(mean_values, positions, marker='o', linestyle='', color='red', label='Mean')
+
+# Add median indicators
+median_values = [np.median(d) for d in data]
+ax.plot(median_values, positions, marker='s', linestyle='', color='green', label='Median')
+
+# Add legend
+ax.legend()
+
+# Display the plot
+plt.savefig('total_pose_dis.png', dpi=300, bbox_inches='tight')
+
+
+ex_sublists = [executed_pose_list[i:i+30] for i in range(0, len(executed_pose_list), 30)]
+
+# Combine the data
+data = ex_sublists
+
+# Create the plot
+fig, ax = plt.subplots()
+
+# Create box plots
+box_plot = ax.boxplot(data, vert=False)
+
+# Add labels and title
+ax.set_yticklabels(['A1B1C1', 'A1B1C2', 'A1B2C1','A1B2C2', 'A2B1C1', 'A2B1C2','A2B2C1', 'A2B2C2'])
+ax.set_ylabel('Dataset')
+ax.set_xlabel('Value')
+ax.set_title('Distribution of Executed Pose Data')
+
+# Add mean indicators
+mean_values = [np.mean(d) for d in data]
+positions = range(1, len(data) + 1)
+ax.plot(mean_values, positions, marker='o', linestyle='', color='red', label='Mean')
+
+# Add median indicators
+median_values = [np.median(d) for d in data]
+ax.plot(median_values, positions, marker='s', linestyle='', color='green', label='Median')
+
+# Add legend
+ax.legend()
+
+# Display the plot
+plt.savefig('ex_pose_dis.png', dpi=300, bbox_inches='tight')
+
+
+# print("Success:", success_list)
+# print("Time:", time_list)
+# print("Total # of poses:", total_poses_list)
+# print("Executed pose #:", executed_pose_list)
+
+results = pd.DataFrame({"Accuracy": success_list,
+                        "Time": time_list,
+                        "Total_Poses": total_poses_list,
+                        "Executed_Pose": executed_pose_list})
+
+correlation_matrix = results.corr()
+print(correlation_matrix)
+
+data = np.array([success_list, time_list, total_poses_list, executed_pose_list])
+
+
+correlation_matrix = np.corrcoef(data)
+p_values = np.zeros_like(correlation_matrix)
+corr_values = np.zeros_like(correlation_matrix)
+
+# Calculate p-values
+num_vars = data.shape[0]
+for i in range(num_vars):
+    for j in range(num_vars):
+        corr, p_val = pearsonr(data[i,:], data[j,:])
+        corr_values[i, j] = corr
+        corr_values[j, i] = corr
+
+        p_values[i, j] = p_val
+        p_values[j, i] = p_val
+
+print("Correlation matrix:")
+print(corr_values)
+
+print("P-values:")
+print(p_values)

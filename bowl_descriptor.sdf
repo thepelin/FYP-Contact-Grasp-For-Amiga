@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sdf version="1.6">
+    <model name="bowl">
+      <pose>0.65 0 0.95 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://ikea_table/bowl.obj</uri>
+              <scale>0.03 0.03 0.03</scale> 
+            </mesh>
+          </geometry>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://ikea_table/bowl.obj</uri>
+              <scale>0.03 0.03 0.03</scale> 
+            </mesh>
+          </geometry>
+        </collision>
+        <inertial>
+          <mass>0.01</mass>
+          <inertia>
+            <ixx>0.0</ixx>
+            <iyy>0.0</iyy>
+            <izz>0.0</izz>
+            <ixy>0.0</ixy>
+            <ixz>0.0</ixz>
+            <iyz>0.0</iyz>
+          </inertia>
+        </inertial>
+      </link>
+    </model>
+</sdf>
